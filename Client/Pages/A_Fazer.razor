@@ -1,0 +1,46 @@
+@page "/A_Fazer"
+@using Primeiro_Blazor.Shared
+
+<Container>
+<Addons>
+    <Addon AddonType = "AddonType.Body">
+        <TextEdit Placeholder = "Digite o item a ser feito" @bind-Text = "new_A_Fazer"/>
+    </Addon>
+    <Addon AddonType = "AddonType.End">
+        <Button Color = "Color.Secondary" @onclick = "AddTask">Add</Button>
+    </Addon>
+</Addons>
+<Column ColumnSize = "ColumnSize.Is4">
+<Table>
+    <TableHeader ThemeContrast = "ThemeContrast.Dark">#</TableHeader>
+    <TableBody>
+        @foreach(var Item in Lista_A_Fazer){
+            <TableRow>
+            <li>
+                <input type = "checkbox" @bind = "Item.Done">
+            </li>
+                <TableRowCell>@Item.Item</TableRowCell>
+                <TableRowCell>@(Item.Done ? "Feito" : "Não Feito")</TableRowCell>
+            </TableRow>
+        }
+    </TableBody>
+</Table>
+</Column>
+</Container>
+
+@code{
+
+    List<To_DoEntity> Lista_A_Fazer;
+    public string new_A_Fazer { get; set; }
+    private void AddTask(){
+        Lista_A_Fazer.Add(new To_DoEntity{ Item = new_A_Fazer});
+    }
+    protected override void OnInitialized(){
+        Lista_A_Fazer = new List<To_DoEntity>(){
+            new To_DoEntity(){
+                Item = "Passear com cachorro",
+                Done = true
+            }
+        };
+    }
+}
